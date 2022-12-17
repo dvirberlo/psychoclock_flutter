@@ -1,0 +1,10 @@
+# Exclude platform-specific directories from language statistics (android, ios, linux, macos, web, windows)
+adnroid/** linguist-generated=true
+ios/** linguist-generated=true
+linux/** linguist-generated=true
+macos/** linguist-generated=true
+web/** linguist-generated=true
+windows/** linguist-generated=true
+
+lib/** linguist-generated=false
+test/** linguist-generated=false
