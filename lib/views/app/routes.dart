@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:psychoclock/views/about/about_view.dart';
+import 'package:psychoclock/views/home/home_view.dart';
+import 'package:psychoclock/views/settings/settings_view.dart';
 
 class Routing {
   const Routing({
@@ -18,24 +21,18 @@ const List<Routing> routes = [
     name: 'Home',
     path: '/',
     icon: Icons.home,
-    component: Center(
-      child: Text('Home'),
-    ),
+    component: HomeView(),
   ),
   Routing(
     name: 'Settings',
     path: '/settings',
     icon: Icons.settings,
-    component: Center(
-      child: Text('Settings'),
-    ),
+    component: SettingsView(),
   ),
   Routing(
     name: 'About',
     path: '/about',
     icon: Icons.info,
-    component: Center(
-      child: Text('About'),
-    ),
+    component: AboutView(),
   ),
 ];

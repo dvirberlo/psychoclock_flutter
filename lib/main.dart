@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'routing/app.dart';
+import 'views/app/app_view.dart';
 
 void main() {
   runApp(const MyApp());
