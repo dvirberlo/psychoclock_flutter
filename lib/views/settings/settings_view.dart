@@ -13,7 +13,7 @@ class SettingsView extends StatelessWidget {
         children: [
           const Text('Settings View'),
           StreamBuilder(
-            stream: SettingsController().stream$,
+            stream: SettingsController().settingsChanges$,
             builder: (context, snap) {
               return Text(
                   'Settings: ${json.encode(SettingsController().settings.toJson())}');

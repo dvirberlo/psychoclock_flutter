@@ -1,16 +1,4 @@
-final Settings defaults = Settings.fromJson({
-  'withEssay': true,
-  'essaySeconds': 30 * 60,
-  'chaptersCount': 8,
-  'chapterSeconds': 20 * 60,
-  'notifyMinutesLeft': true,
-  'secondsLeftCount': 5 * 60,
-  'notifyEnds': true,
-  'resetVisualClockEssay': true,
-  'resetVisualClockChapter': true,
-  'chapterPercent': true,
-  'showReset': true,
-});
+final defaultSettings = Settings();
 
 class Settings {
   bool withEssay;
@@ -43,22 +31,23 @@ class Settings {
   });
 
   Settings.fromJson(Map<String, dynamic> json)
-      : withEssay = json['withEssay'] ?? defaults.withEssay,
-        essaySeconds = json['essaySeconds'] ?? defaults.essaySeconds,
-        chaptersCount = json['chaptersCount'] ?? defaults.chaptersCount,
-        chapterSeconds = json['chapterSeconds'] ?? defaults.chapterSeconds,
+      : withEssay = json['withEssay'] ?? defaultSettings.withEssay,
+        essaySeconds = json['essaySeconds'] ?? defaultSettings.essaySeconds,
+        chaptersCount = json['chaptersCount'] ?? defaultSettings.chaptersCount,
+        chapterSeconds =
+            json['chapterSeconds'] ?? defaultSettings.chapterSeconds,
         notifyMinutesLeft =
-            json['notifyMinutesLeft'] ?? defaults.notifyMinutesLeft,
+            json['notifyMinutesLeft'] ?? defaultSettings.notifyMinutesLeft,
         secondsLeftCount =
-            json['secondsLeftCount'] ?? defaults.secondsLeftCount,
-        notifyEnds = json['notifyEnds'] ?? defaults.notifyEnds,
-        resetVisualClockEssay =
-            json['resetVisualClockEssay'] ?? defaults.resetVisualClockEssay,
-        resetVisualClockChapter =
-            json['resetVisualClockChapter'] ?? defaults.resetVisualClockChapter,
+            json['secondsLeftCount'] ?? defaultSettings.secondsLeftCount,
+        notifyEnds = json['notifyEnds'] ?? defaultSettings.notifyEnds,
+        resetVisualClockEssay = json['resetVisualClockEssay'] ??
+            defaultSettings.resetVisualClockEssay,
+        resetVisualClockChapter = json['resetVisualClockChapter'] ??
+            defaultSettings.resetVisualClockChapter,
         onlyChapterPercent =
-            json['chapterPercent'] ?? defaults.onlyChapterPercent,
-        showReset = json['showReset'] ?? defaults.showReset;
+            json['chapterPercent'] ?? defaultSettings.onlyChapterPercent,
+        showReset = json['showReset'] ?? defaultSettings.showReset;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
