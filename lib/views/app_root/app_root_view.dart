@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 
-import 'routes.dart';
+import '../../app_router.dart';
 
-class AppRoot extends StatelessWidget {
+class AppRootView extends StatelessWidget {
   final String path;
-  const AppRoot({super.key, required this.path});
+  const AppRootView({super.key, required this.path});
 
   @override
   Widget build(BuildContext context) {
+    final currentRouteIndex = router.getRouteIndex(path);
+    final currentRoute = router.routes[currentRouteIndex];
     return AdaptiveScaffold(
-      body: (context) =>
-          routes.firstWhere((route) => route.path == path).component,
-      selectedIndex: routes.indexWhere((route) => route.path == path),
+      body: currentRoute.componentBuilder,
+      selectedIndex: currentRouteIndex,
       onSelectedIndexChange: (index) {
-        Navigator.pushNamed(context, routes[index].path);
+        Navigator.pushNamed(context, router.routes[index].path);
       },
-      destinations: routes
+      destinations: router.routes
           .map(
             (route) => NavigationDestination(
               icon: Icon(route.icon),

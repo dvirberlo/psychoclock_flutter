@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'views/app/app_view.dart';
+import 'views/app_root/app_root_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       onGenerateRoute: (settings) {
         return MaterialPageRoute(
-            builder: (context) => AppRoot(path: settings.name ?? '/'));
+            builder: (context) => AppRootView(path: settings.name ?? '/'));
       },
     );
   }

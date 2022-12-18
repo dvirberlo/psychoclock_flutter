@@ -3,36 +3,25 @@ import 'package:psychoclock/views/about/about_view.dart';
 import 'package:psychoclock/views/home/home_view.dart';
 import 'package:psychoclock/views/settings/settings_view.dart';
 
-class Routing {
-  const Routing({
-    required this.name,
-    required this.path,
-    required this.icon,
-    required this.component,
-  });
-  final String name;
-  final String path;
-  final Widget component;
-  final IconData icon;
-}
+import 'models/routing.dart';
 
-const List<Routing> routes = [
-  Routing(
+final AppRouter router = AppRouter(routes: [
+  AppRout(
     name: 'Home',
     path: '/',
     icon: Icons.home,
-    component: HomeView(),
+    componentBuilder: (context) => const HomeView(),
   ),
-  Routing(
+  AppRout(
     name: 'Settings',
     path: '/settings',
     icon: Icons.settings,
-    component: SettingsView(),
+    componentBuilder: (context) => const SettingsView(),
   ),
-  Routing(
+  AppRout(
     name: 'About',
     path: '/about',
     icon: Icons.info,
-    component: AboutView(),
+    componentBuilder: (context) => const AboutView(),
   ),
-];
+]);
