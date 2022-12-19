@@ -2,22 +2,22 @@ import 'package:rxdart/rxdart.dart';
 
 class Streamable<T> {
   final BehaviorSubject<T> _subject;
-  final List<Function> _onSet;
+  final List<Function> _changeListeners;
 
   Streamable(T initValue)
-      : _onSet = [],
+      : _changeListeners = [],
         _subject = BehaviorSubject.seeded(initValue);
 
-  Streamable.withOnSets(
+  Streamable.withListeners(
     T initValue,
     List<Function> onSet,
-  )   : _onSet = onSet,
+  )   : _changeListeners = onSet,
         _subject = BehaviorSubject.seeded(initValue);
 
-  Streamable.withOnSet(
+  Streamable.withListener(
     T initValue,
     Function onSet,
-  )   : _onSet = [onSet],
+  )   : _changeListeners = [onSet],
         _subject = BehaviorSubject.seeded(initValue);
 
   Stream<T> get stream$ => _subject.stream;
@@ -26,7 +26,7 @@ class Streamable<T> {
   void set(T value) {
     if (value == current) return;
     _subject.add(value);
-    for (final func in _onSet) {
+    for (final func in _changeListeners) {
       func();
     }
   }
