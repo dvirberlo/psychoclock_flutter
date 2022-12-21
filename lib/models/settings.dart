@@ -24,8 +24,36 @@ extension ProgressTypeJsonable on ProgressType {
   }
 }
 
+enum ResetType { never, essay, always }
+
+extension ResetTypeJsonable on ResetType {
+  String toJson() {
+    switch (this) {
+      case ResetType.never:
+        return 'never';
+      case ResetType.essay:
+        return 'essay';
+      case ResetType.always:
+        return 'always';
+    }
+  }
+
+  static ResetType? fromJson(String? json) {
+    switch (json) {
+      case 'never':
+        return ResetType.never;
+      case 'essay':
+        return ResetType.essay;
+      case 'always':
+        return ResetType.always;
+      default:
+        return null;
+    }
+  }
+}
+
 class Settings {
-  static const int version = 2;
+  static const int version = 3;
 
   bool withEssay;
   int essaySeconds;
@@ -34,10 +62,9 @@ class Settings {
   bool notifyBeforeEnd;
   int secondsLeftCount;
   bool notifyEnds;
-  bool resetVisualClockEssay;
-  bool resetVisualClockChapter;
-  ProgressType progressType;
   bool showReset;
+  ResetType resetType;
+  ProgressType progressType;
 
   Settings({
     this.withEssay = true,
@@ -47,10 +74,9 @@ class Settings {
     this.notifyBeforeEnd = true,
     this.secondsLeftCount = 5 * 60,
     this.notifyEnds = true,
-    this.resetVisualClockEssay = true,
-    this.resetVisualClockChapter = true,
-    this.progressType = ProgressType.perPhase,
     this.showReset = true,
+    this.resetType = ResetType.always,
+    this.progressType = ProgressType.perPhase,
   });
 
   Settings.fromJson(Map<String, dynamic> json)
@@ -64,13 +90,11 @@ class Settings {
         secondsLeftCount =
             json['secondsLeftCount'] ?? defaultSettings.secondsLeftCount,
         notifyEnds = json['notifyEnds'] ?? defaultSettings.notifyEnds,
-        resetVisualClockEssay = json['resetVisualClockEssay'] ??
-            defaultSettings.resetVisualClockEssay,
-        resetVisualClockChapter = json['resetVisualClockChapter'] ??
-            defaultSettings.resetVisualClockChapter,
+        showReset = json['showReset'] ?? defaultSettings.showReset,
         progressType = ProgressTypeJsonable.fromJson(json['progressType']) ??
             defaultSettings.progressType,
-        showReset = json['showReset'] ?? defaultSettings.showReset;
+        resetType = ResetTypeJsonable.fromJson(json['resetType']) ??
+            defaultSettings.resetType;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -81,10 +105,9 @@ class Settings {
     data['notifyMinutesLeft'] = notifyBeforeEnd;
     data['secondsLeftCount'] = secondsLeftCount;
     data['notifyEnds'] = notifyEnds;
-    data['resetVisualClockEssay'] = resetVisualClockEssay;
-    data['resetVisualClockChapter'] = resetVisualClockChapter;
-    data['progressType'] = progressType.toJson();
     data['showReset'] = showReset;
+    data['resetType'] = resetType.toJson();
+    data['progressType'] = progressType.toJson();
     return data;
   }
 
@@ -96,10 +119,9 @@ class Settings {
     bool? notifyBeforeEnd,
     int? secondsLeftCount,
     bool? notifyEnds,
-    bool? resetVisualClockEssay,
-    bool? resetVisualClockChapter,
-    ProgressType? progressType,
     bool? showReset,
+    ResetType? resetType,
+    ProgressType? progressType,
   }) {
     return Settings(
       withEssay: withEssay ?? this.withEssay,
@@ -109,12 +131,9 @@ class Settings {
       notifyBeforeEnd: notifyBeforeEnd ?? this.notifyBeforeEnd,
       secondsLeftCount: secondsLeftCount ?? this.secondsLeftCount,
       notifyEnds: notifyEnds ?? this.notifyEnds,
-      resetVisualClockEssay:
-          resetVisualClockEssay ?? this.resetVisualClockEssay,
-      resetVisualClockChapter:
-          resetVisualClockChapter ?? this.resetVisualClockChapter,
-      progressType: progressType ?? this.progressType,
       showReset: showReset ?? this.showReset,
+      resetType: resetType ?? this.resetType,
+      progressType: progressType ?? this.progressType,
     );
   }
 }

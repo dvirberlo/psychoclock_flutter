@@ -222,10 +222,11 @@ class ClockController {
     final cache = _tickCache!;
     var seconds = cache.ranSeconds;
     if (cache.phase.type == ClockPhaseType.chapters) {
-      if (settings.resetVisualClockEssay && settings.withEssay) {
+      if (settings.resetType != ResetType.never && settings.withEssay) {
         seconds -= settings.essaySeconds;
       }
-      if (settings.resetVisualClockChapter && (cache.phase.counter ?? 0) > 0) {
+      if (settings.resetType == ResetType.always &&
+          (cache.phase.counter ?? 0) > 0) {
         seconds = seconds % settings.chapterSeconds;
       }
     }

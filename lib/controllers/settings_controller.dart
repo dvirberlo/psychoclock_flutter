@@ -28,16 +28,12 @@ class SettingsController {
       defaultSettings.secondsLeftCount, () => _instance._onSettingsChanged());
   final notifyEnds = Streamable<bool>.withListener(
       defaultSettings.notifyEnds, () => _instance._onSettingsChanged());
-  final resetVisualClockEssay = Streamable<bool>.withListener(
-      defaultSettings.resetVisualClockEssay,
-      () => _instance._onSettingsChanged());
-  final resetVisualClockChapter = Streamable<bool>.withListener(
-      defaultSettings.resetVisualClockChapter,
-      () => _instance._onSettingsChanged());
-  final progressType = Streamable<ProgressType>.withListener(
-      defaultSettings.progressType, () => _instance._onSettingsChanged());
   final showReset = Streamable<bool>.withListener(
       defaultSettings.showReset, () => _instance._onSettingsChanged());
+  final progressType = Streamable<ProgressType>.withListener(
+      defaultSettings.progressType, () => _instance._onSettingsChanged());
+  final resetType = Streamable<ResetType>.withListener(
+      defaultSettings.resetType, () => _instance._onSettingsChanged());
 
   Settings generateSettings() => Settings(
         withEssay: withEssay.current,
@@ -47,10 +43,9 @@ class SettingsController {
         notifyBeforeEnd: notifyBeforeEnd.current,
         secondsLeftCount: secondsLeftCount.current,
         notifyEnds: notifyEnds.current,
-        resetVisualClockEssay: resetVisualClockEssay.current,
-        resetVisualClockChapter: resetVisualClockChapter.current,
-        progressType: progressType.current,
         showReset: showReset.current,
+        progressType: progressType.current,
+        resetType: resetType.current,
       );
 
   void _setAll(Settings settings) {
@@ -61,10 +56,9 @@ class SettingsController {
     notifyBeforeEnd.set(settings.notifyBeforeEnd);
     secondsLeftCount.set(settings.secondsLeftCount);
     notifyEnds.set(settings.notifyEnds);
-    resetVisualClockEssay.set(settings.resetVisualClockEssay);
-    resetVisualClockChapter.set(settings.resetVisualClockChapter);
-    progressType.set(settings.progressType);
     showReset.set(settings.showReset);
+    progressType.set(settings.progressType);
+    resetType.set(settings.resetType);
   }
 
   static const _storageKey = 'settingsV${Settings.version}';
