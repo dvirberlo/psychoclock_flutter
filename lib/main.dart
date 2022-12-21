@@ -17,8 +17,9 @@ class MyApp extends StatelessWidget {
       theme: appDarkTheme,
       initialRoute: '/',
       onGenerateRoute: (settings) {
-        return MaterialPageRoute(
-            builder: (context) => AppRootView(path: settings.name ?? '/'));
+        return AppPageRoute(
+          builder: (context) => AppRootView(path: settings.name ?? '/'),
+        );
       },
       debugShowCheckedModeBanner: false,
     );
