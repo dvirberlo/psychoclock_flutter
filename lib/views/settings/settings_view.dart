@@ -1,113 +1,111 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:psychoclock/controllers/settings_controller.dart';
-import 'package:psychoclock/models/settings.dart';
+
+import '../../controllers/settings_controller.dart';
+import '../../models/settings.dart';
+import '../shared/shell_widget.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-      child: Column(
-        children: [
-          const Text('Settings View'),
-          StreamBuilder(
-            stream: SettingsController().settingsChanges$,
-            builder: (context, snap) {
-              final settings = SettingsController().generateSettings();
-              return Column(
-                children: [
-                  _Toggle(
-                    initValue: settings.withEssay,
-                    onChanged: (value) =>
-                        SettingsController().withEssay.set(value),
-                    labelWidget: Row(
-                      children: [
-                        const Text('With essay'),
-                        const SizedBox(width: 10),
-                        if (settings.withEssay)
-                          _DoubleField(
-                            afterLabel: 'seconds long',
-                            initValue: settings.essaySeconds,
-                            onChanged: (value) {
-                              SettingsController().essaySeconds.set(value);
-                            },
-                          ),
-                      ],
-                    ),
+    return ShellWidget(
+      title: 'Settings',
+      children: [
+        StreamBuilder(
+          stream: SettingsController().settingsChanges$,
+          builder: (context, snap) {
+            final settings = SettingsController().generateSettings();
+            return Column(
+              children: [
+                _Toggle(
+                  initValue: settings.withEssay,
+                  onChanged: (value) =>
+                      SettingsController().withEssay.set(value),
+                  labelWidget: Row(
+                    children: [
+                      const Text('With essay'),
+                      const SizedBox(width: 10),
+                      if (settings.withEssay)
+                        _DoubleField(
+                          afterLabel: 'seconds long',
+                          initValue: settings.essaySeconds,
+                          onChanged: (value) {
+                            SettingsController().essaySeconds.set(value);
+                          },
+                        ),
+                    ],
                   ),
-                  _IntField(
-                    afterLabel: 'chapters',
-                    initValue: settings.chaptersCount,
-                    onChanged: (value) =>
-                        SettingsController().chaptersCount.set(value),
-                  ),
-                  if (settings.chaptersCount > 0)
-                    _DoubleField(
-                      label: 'Each chapter',
-                      afterLabel: 'seconds long',
-                      initValue: settings.chapterSeconds,
-                      onChanged: (value) {
-                        SettingsController().chapterSeconds.set(value);
-                      },
-                    ),
-                  const SizedBox(height: 10),
-                  const Divider(thickness: 2),
-                  const SizedBox(height: 10),
-                  _Toggle(
-                    initValue: settings.notifyBeforeEnd,
-                    onChanged: (value) =>
-                        SettingsController().notifyBeforeEnd.set(value),
-                    labelWidget: Row(
-                      children: [
-                        const Text('Notify'),
-                        if (settings.notifyBeforeEnd)
-                          _DoubleField(
-                            afterLabel: 'seconds',
-                            initValue: settings.secondsLeftCount,
-                            onChanged: (value) => SettingsController()
-                                .secondsLeftCount
-                                .set(value),
-                          ),
-                        const Text(' before ends'),
-                      ],
-                    ),
-                  ),
-                  _Toggle(
-                    labelWidget: const Text('Show reset button'),
-                    initValue: settings.showReset,
-                    onChanged: (value) =>
-                        SettingsController().showReset.set(value),
-                  ),
-                  _Choice<ResetType>(
-                    label: 'Reset type',
-                    initValue: settings.resetType,
-                    values: const {
-                      ResetType.always: 'Always',
-                      ResetType.essay: 'After essay',
-                      ResetType.never: 'Never',
+                ),
+                _IntField(
+                  afterLabel: 'chapters',
+                  initValue: settings.chaptersCount,
+                  onChanged: (value) =>
+                      SettingsController().chaptersCount.set(value),
+                ),
+                if (settings.chaptersCount > 0)
+                  _DoubleField(
+                    label: 'Each chapter',
+                    afterLabel: 'seconds long',
+                    initValue: settings.chapterSeconds,
+                    onChanged: (value) {
+                      SettingsController().chapterSeconds.set(value);
                     },
-                    onChanged: (value) =>
-                        SettingsController().resetType.set(value),
                   ),
-                  _Choice<ProgressType>(
-                    label: 'Circle progress type',
-                    initValue: settings.progressType,
-                    values: const {
-                      ProgressType.total: 'Total',
-                      ProgressType.perPhase: 'Per phase',
-                    },
-                    onChanged: (value) =>
-                        SettingsController().progressType.set(value),
+                const SizedBox(height: 10),
+                const Divider(thickness: 2),
+                const SizedBox(height: 10),
+                _Toggle(
+                  initValue: settings.notifyBeforeEnd,
+                  onChanged: (value) =>
+                      SettingsController().notifyBeforeEnd.set(value),
+                  labelWidget: Row(
+                    children: [
+                      const Text('Notify'),
+                      if (settings.notifyBeforeEnd)
+                        _DoubleField(
+                          afterLabel: 'seconds',
+                          initValue: settings.secondsLeftCount,
+                          onChanged: (value) =>
+                              SettingsController().secondsLeftCount.set(value),
+                        ),
+                      const Text(' before ends'),
+                    ],
                   ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
+                ),
+                _Toggle(
+                  labelWidget: const Text('Show reset button'),
+                  initValue: settings.showReset,
+                  onChanged: (value) =>
+                      SettingsController().showReset.set(value),
+                ),
+                _Choice<ResetType>(
+                  label: 'Reset type',
+                  initValue: settings.resetType,
+                  values: const {
+                    ResetType.always: 'Always',
+                    ResetType.essay: 'After essay',
+                    ResetType.never: 'Never',
+                  },
+                  onChanged: (value) =>
+                      SettingsController().resetType.set(value),
+                ),
+                _Choice<ProgressType>(
+                  label: 'Circle progress type',
+                  initValue: settings.progressType,
+                  values: const {
+                    ProgressType.total: 'Total',
+                    ProgressType.perPhase: 'Per phase',
+                  },
+                  onChanged: (value) =>
+                      SettingsController().progressType.set(value),
+                ),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }

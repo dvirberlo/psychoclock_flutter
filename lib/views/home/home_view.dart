@@ -1,66 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:psychoclock/controllers/clock_controller.dart';
-import 'package:psychoclock/controllers/settings_controller.dart';
 
+import '../../controllers/clock_controller.dart';
+import '../../controllers/settings_controller.dart';
 import '../../models/clock_state.dart';
+import '../shared/shell_widget.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 50),
-      child: Center(
-        child: Column(
-          children: [
-            StreamBuilder(
-              stream: ClockController().clockState.stream$,
-              builder: (context, snapshot) {
-                final seconds = (snapshot.data?.seconds ?? 0) % 60;
-                final minutes = ((snapshot.data?.seconds ?? 0) ~/ 60) % 60;
-                final hours = (snapshot.data?.seconds ?? 0) ~/ 3600;
-                final double progressFraction =
-                    ClockController().clockMode.current == ClockMode.done
-                        ? 1
-                        : (snapshot.data?.progressFraction ?? 0);
-                final phaseType =
-                    snapshot.data?.phase.type ?? ClockPhaseType.essay;
-                return Stack(
-                  alignment: Alignment.center,
+    return ShellWidget(
+      children: [
+        const SizedBox(height: 30),
+        StreamBuilder(
+          stream: ClockController().clockState.stream$,
+          builder: (context, snapshot) {
+            final seconds = (snapshot.data?.seconds ?? 0) % 60;
+            final minutes = ((snapshot.data?.seconds ?? 0) ~/ 60) % 60;
+            final hours = (snapshot.data?.seconds ?? 0) ~/ 3600;
+            final double progressFraction =
+                ClockController().clockMode.current == ClockMode.done
+                    ? 1
+                    : (snapshot.data?.progressFraction ?? 0);
+            final phaseType = snapshot.data?.phase.type ?? ClockPhaseType.essay;
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 300,
+                  height: 300,
+                  child: CircularProgressIndicator(
+                    value: progressFraction,
+                    backgroundColor:
+                        Theme.of(context).primaryColor.withOpacity(0.2),
+                    strokeWidth: 3,
+                  ),
+                ),
+                Column(
                   children: [
-                    SizedBox(
-                      width: 300,
-                      height: 300,
-                      child: CircularProgressIndicator(
-                        value: progressFraction,
-                        backgroundColor:
-                            Theme.of(context).primaryColor.withOpacity(0.2),
-                        strokeWidth: 3,
-                      ),
+                    Text(
+                      phaseType == ClockPhaseType.essay
+                          ? 'Essay'
+                          : 'Chapter ${snapshot.data?.phase.counter}',
+                      style: Theme.of(context).textTheme.headline2,
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          phaseType == ClockPhaseType.essay
-                              ? 'Essay'
-                              : 'Chapter ${snapshot.data?.phase.counter}',
-                          style: Theme.of(context).textTheme.headline2,
-                        ),
-                        Text(
-                          '${hours == 0 ? '' : '${hours.toString().padLeft(2, '0')} : '}${minutes.toString().padLeft(2, '0')} : ${seconds.toString().padLeft(2, '0')}',
-                          style: Theme.of(context).textTheme.headline1,
-                        ),
-                        const _ButtonsRow(),
-                      ],
-                    )
+                    Text(
+                      '${hours == 0 ? '' : '${hours.toString().padLeft(2, '0')} : '}${minutes.toString().padLeft(2, '0')} : ${seconds.toString().padLeft(2, '0')}',
+                      style: Theme.of(context).textTheme.headline1,
+                    ),
+                    const _ButtonsRow(),
                   ],
-                );
-              },
-            ),
-          ],
+                )
+              ],
+            );
+          },
         ),
-      ),
+      ],
     );
   }
 }
