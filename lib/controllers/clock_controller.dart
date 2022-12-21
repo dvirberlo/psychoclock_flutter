@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:psychoclock/controllers/notifoer_controller.dart';
-import 'package:psychoclock/models/clock_state.dart';
+import 'notifoer_controller.dart';
+import '../models/clock_state.dart';
 
 import '../models/settings.dart';
 import 'settings_controller.dart';
