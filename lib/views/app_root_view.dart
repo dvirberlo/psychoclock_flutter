@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 
-import '../../app_router.dart';
+import '../app_router.dart';
 
 class AppRootView extends StatelessWidget {
   final String path;

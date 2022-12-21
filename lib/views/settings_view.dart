@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../controllers/settings_controller.dart';
-import '../../models/settings.dart';
-import '../shared/shell_widget.dart';
+import '../controllers/settings_controller.dart';
+import '../models/settings.dart';
+import 'shared/shell_widget.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});

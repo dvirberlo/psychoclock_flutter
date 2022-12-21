@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../controllers/clock_controller.dart';
-import '../../controllers/settings_controller.dart';
-import '../../models/clock_state.dart';
-import '../shared/shell_widget.dart';
+import '../controllers/clock_controller.dart';
+import '../controllers/settings_controller.dart';
+import '../models/clock_state.dart';
+import 'shared/shell_widget.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

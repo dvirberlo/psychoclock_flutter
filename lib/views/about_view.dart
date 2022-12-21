@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../shared/shell_widget.dart';
+import 'shared/shell_widget.dart';
 
 class AboutView extends StatelessWidget {
   const AboutView({super.key});
