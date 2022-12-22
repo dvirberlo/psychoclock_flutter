@@ -242,8 +242,8 @@ class ClockController {
   ClockController._createInstance() {
     SettingsController().settingsChanges$.listen((_) {
       if (_tickTimer != null && clockMode.current == ClockMode.on) {
-        _stop();
-        _continue();
+        _stop(muted: true);
+        _continue(muted: true);
       }
     });
   }
