@@ -57,6 +57,48 @@ class SettingsView extends StatelessWidget {
                 const SizedBox(height: 10),
                 const Divider(thickness: 2),
                 const SizedBox(height: 10),
+                _Choice<int>(
+                  label: 'Voice variant:',
+                  initValue: settings.voiceId,
+                  values: voiceList
+                      .asMap()
+                      .map((key, value) => MapEntry(key, value.name)),
+                  onChanged: (value) {
+                    VoiceNotifier().getPlayer(value).play(VoicePlays.demoVoice);
+                    SettingsController().voiceId.set(value);
+                  },
+                ),
+                _Choice<ResetType>(
+                  label: 'Reset clock',
+                  initValue: settings.resetType,
+                  values: const {
+                    ResetType.always: 'each phase',
+                    ResetType.essay: 'after essay',
+                    ResetType.never: 'never',
+                  },
+                  onChanged: (value) =>
+                      SettingsController().resetType.set(value),
+                ),
+                _Choice<ProgressType>(
+                  label: 'Circle progress',
+                  initValue: settings.progressType,
+                  values: const {
+                    ProgressType.total: 'of the entire test',
+                    ProgressType.perPhase: 'per phase',
+                  },
+                  onChanged: (value) =>
+                      SettingsController().progressType.set(value),
+                ),
+                _Toggle(
+                  initValue: settings.notifyEnds,
+                  onChanged: (value) =>
+                      SettingsController().notifyEnds.set(value),
+                  labelWidget: Row(
+                    children: const [
+                      Text('Notify at ends of phases'),
+                    ],
+                  ),
+                ),
                 _Toggle(
                   initValue: settings.notifyBeforeEnd,
                   onChanged: (value) =>
@@ -72,38 +114,6 @@ class SettingsView extends StatelessWidget {
                   initValue: settings.showReset,
                   onChanged: (value) =>
                       SettingsController().showReset.set(value),
-                ),
-                _Choice<ResetType>(
-                  label: 'Reset type',
-                  initValue: settings.resetType,
-                  values: const {
-                    ResetType.always: 'Always',
-                    ResetType.essay: 'After essay',
-                    ResetType.never: 'Never',
-                  },
-                  onChanged: (value) =>
-                      SettingsController().resetType.set(value),
-                ),
-                _Choice<int>(
-                  label: 'Voice',
-                  initValue: settings.voiceId,
-                  values: voiceList
-                      .asMap()
-                      .map((key, value) => MapEntry(key, value.name)),
-                  onChanged: (value) {
-                    VoiceNotifier().getPlayer(value).play(VoicePlays.demoVoice);
-                    SettingsController().voiceId.set(value);
-                  },
-                ),
-                _Choice<ProgressType>(
-                  label: 'Circle progress type',
-                  initValue: settings.progressType,
-                  values: const {
-                    ProgressType.total: 'Total',
-                    ProgressType.perPhase: 'Per phase',
-                  },
-                  onChanged: (value) =>
-                      SettingsController().progressType.set(value),
                 ),
               ],
             );
