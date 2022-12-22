@@ -7,9 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/settings.dart';
 import 'shared/streamable.dart';
 
-// Did you hear it? OOP mean boillerplate code, sad but true.
-// Where are you, my dear TypeScript? :(
-
 class SettingsController {
   final BehaviorSubject _settingsSubject = BehaviorSubject.seeded(null);
   Stream get settingsChanges$ => _settingsSubject.stream;
@@ -34,6 +31,8 @@ class SettingsController {
       defaultSettings.progressType, () => _instance._onSettingsChanged());
   final resetType = Streamable<ResetType>.withListener(
       defaultSettings.resetType, () => _instance._onSettingsChanged());
+  final voiceId = Streamable<int>.withListener(
+      defaultSettings.voiceId, () => _instance._onSettingsChanged());
 
   Settings generateSettings() => Settings(
         withEssay: withEssay.current,
@@ -46,6 +45,7 @@ class SettingsController {
         showReset: showReset.current,
         progressType: progressType.current,
         resetType: resetType.current,
+        voiceId: voiceId.current,
       );
 
   void _setAll(Settings settings) {
@@ -59,6 +59,7 @@ class SettingsController {
     showReset.set(settings.showReset);
     progressType.set(settings.progressType);
     resetType.set(settings.resetType);
+    voiceId.set(settings.voiceId);
   }
 
   static const _storageKey = 'settingsV${Settings.version}';

@@ -53,7 +53,7 @@ extension ResetTypeJsonable on ResetType {
 }
 
 class Settings {
-  static const int version = 3;
+  static const int version = 4;
 
   bool withEssay;
   int essaySeconds;
@@ -65,6 +65,7 @@ class Settings {
   bool showReset;
   ResetType resetType;
   ProgressType progressType;
+  int voiceId;
 
   Settings({
     this.withEssay = true,
@@ -77,6 +78,7 @@ class Settings {
     this.showReset = true,
     this.resetType = ResetType.always,
     this.progressType = ProgressType.perPhase,
+    this.voiceId = 0,
   });
 
   Settings.fromJson(Map<String, dynamic> json)
@@ -94,7 +96,8 @@ class Settings {
         progressType = ProgressTypeJsonable.fromJson(json['progressType']) ??
             defaultSettings.progressType,
         resetType = ResetTypeJsonable.fromJson(json['resetType']) ??
-            defaultSettings.resetType;
+            defaultSettings.resetType,
+        voiceId = json['voiceId'] ?? defaultSettings.voiceId;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -108,6 +111,7 @@ class Settings {
     data['showReset'] = showReset;
     data['resetType'] = resetType.toJson();
     data['progressType'] = progressType.toJson();
+    data['voiceId'] = voiceId;
     return data;
   }
 
@@ -122,6 +126,7 @@ class Settings {
     bool? showReset,
     ResetType? resetType,
     ProgressType? progressType,
+    int? voiceId,
   }) {
     return Settings(
       withEssay: withEssay ?? this.withEssay,
@@ -134,6 +139,7 @@ class Settings {
       showReset: showReset ?? this.showReset,
       resetType: resetType ?? this.resetType,
       progressType: progressType ?? this.progressType,
+      voiceId: voiceId ?? this.voiceId,
     );
   }
 }

@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'notifoer_controller.dart';
 import '../models/clock_state.dart';
-
 import '../models/settings.dart';
+import 'notifoer_controller.dart';
 import 'settings_controller.dart';
 import 'shared/streamable.dart';
 
@@ -17,7 +16,7 @@ class ClockController {
 
   final clockState = Streamable<ClockState>(const ClockState());
   final clockMode = Streamable<ClockMode>(ClockMode.off);
-  final _notifier = const VoiceNotifier();
+  final _notifier = VoiceNotifier();
 
   int _secondsRan = 0;
   int _lastStart = 0;
@@ -49,7 +48,7 @@ class ClockController {
   void _start() {
     reset();
     _continue(muted: true);
-    _notifier.clockStart();
+    _notifier.currentPlayer.play(VoicePlays.clockStart);
   }
 
   void _stop({bool muted = false}) {
@@ -61,14 +60,14 @@ class ClockController {
     _tickTimer?.cancel();
     _tickCache = null;
     _timers.clear();
-    if (!muted) _notifier.cancel();
+    if (!muted) _notifier.currentPlayer.cancel();
     clockMode.set(ClockMode.paused);
   }
 
   void _continue({bool muted = false}) {
     _lastStart = DateTime.now().millisecondsSinceEpoch;
     _setupTimeouts();
-    if (!muted) _notifier.clockContinue();
+    if (!muted) _notifier.currentPlayer.play(VoicePlays.clockContinue);
     clockMode.set(ClockMode.on);
     _tickTimer = Timer.periodic(
       const Duration(milliseconds: clockIntervalMs),
@@ -81,7 +80,6 @@ class ClockController {
   void _setupTimeouts() {
     final settings = SettingsController().generateSettings();
     int baseSeconds = -_secondsRan;
-    final minutesLeft = settings.secondsLeftCount ~/ 60;
     // before essay
     if (settings.withEssay) {
       baseSeconds += settings.essaySeconds - settings.secondsLeftCount;
@@ -91,7 +89,7 @@ class ClockController {
             Duration(seconds: baseSeconds),
             () {
               if (settings.notifyBeforeEnd) {
-                _notifier.minutesLeft(minutesLeft);
+                _notifier.currentPlayer.play(VoicePlays.minLeft);
               }
             },
           ),
@@ -105,7 +103,7 @@ class ClockController {
             Duration(seconds: baseSeconds),
             () {
               if (settings.notifyBeforeEnd) {
-                _notifier.nextChapter();
+                _notifier.currentPlayer.play(VoicePlays.nextChapter);
               }
             },
           ),
@@ -121,7 +119,7 @@ class ClockController {
             Duration(seconds: baseSeconds),
             () {
               if (settings.notifyBeforeEnd) {
-                _notifier.minutesLeft(minutesLeft);
+                _notifier.currentPlayer.play(VoicePlays.minLeft);
               }
             },
           ),
@@ -135,7 +133,7 @@ class ClockController {
             Duration(seconds: baseSeconds),
             () {
               if (settings.notifyBeforeEnd) {
-                _notifier.nextChapter();
+                _notifier.currentPlayer.play(VoicePlays.nextChapter);
               }
             },
           ),
@@ -149,7 +147,7 @@ class ClockController {
         () {
           reset();
           clockMode.set(ClockMode.done);
-          _notifier.end();
+          _notifier.currentPlayer.play(VoicePlays.clockEnd);
         },
       ),
     );

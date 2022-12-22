@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../controllers/notifoer_controller.dart';
 import '../controllers/settings_controller.dart';
 import '../models/settings.dart';
 import 'shared/shell_widget.dart';
@@ -61,16 +62,8 @@ class SettingsView extends StatelessWidget {
                   onChanged: (value) =>
                       SettingsController().notifyBeforeEnd.set(value),
                   labelWidget: Row(
-                    children: [
-                      const Text('Notify'),
-                      if (settings.notifyBeforeEnd)
-                        _DoubleField(
-                          afterLabel: 'seconds',
-                          initValue: settings.secondsLeftCount,
-                          onChanged: (value) =>
-                              SettingsController().secondsLeftCount.set(value),
-                        ),
-                      const Text(' before ends'),
+                    children: const [
+                      Text('Notify 5 minutes before end'),
                     ],
                   ),
                 ),
@@ -90,6 +83,17 @@ class SettingsView extends StatelessWidget {
                   },
                   onChanged: (value) =>
                       SettingsController().resetType.set(value),
+                ),
+                _Choice<int>(
+                  label: 'Voice',
+                  initValue: settings.voiceId,
+                  values: voiceList
+                      .asMap()
+                      .map((key, value) => MapEntry(key, value.name)),
+                  onChanged: (value) {
+                    VoiceNotifier().getPlayer(value).play(VoicePlays.demoVoice);
+                    SettingsController().voiceId.set(value);
+                  },
                 ),
                 _Choice<ProgressType>(
                   label: 'Circle progress type',
