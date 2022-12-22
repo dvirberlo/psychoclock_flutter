@@ -11,7 +11,8 @@ class AboutView extends StatelessWidget {
       title: 'About',
       children: [
         Text(
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          'A modern and customizable clock to simulate a psychometric test.\n\n'
+          'It tries to focus in modern and simple design, without compromising any feature.',
           style: TextStyle(fontSize: 20),
           textAlign: TextAlign.center,
         ),
