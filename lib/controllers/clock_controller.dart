@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:wakelock/wakelock.dart';
+
 import '../models/clock_state.dart';
 import '../models/settings.dart';
 import 'notifoer_controller.dart';
@@ -31,6 +33,7 @@ class ClockController {
     _lastStart = 0;
     clockState.set(const ClockState());
     clockMode.set(ClockMode.off);
+    Wakelock.disable();
   }
 
   void toggleStart() {
@@ -62,6 +65,7 @@ class ClockController {
     _timers.clear();
     if (!muted) _notifier.currentPlayer.cancel();
     clockMode.set(ClockMode.paused);
+    Wakelock.disable();
   }
 
   void _continue({bool muted = false}) {
@@ -75,6 +79,7 @@ class ClockController {
         _tick();
       },
     );
+    Wakelock.enable();
   }
 
   void _setupTimeouts() {
@@ -148,6 +153,7 @@ class ClockController {
           reset();
           clockMode.set(ClockMode.done);
           _notifier.currentPlayer.play(VoicePlays.clockEnd);
+          Wakelock.disable();
         },
       ),
     );
