@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../controllers/clock_controller.dart';
 import '../controllers/settings_controller.dart';
@@ -13,48 +14,59 @@ class HomeView extends StatelessWidget {
     return ShellWidget(
       children: [
         const SizedBox(height: 30),
-        StreamBuilder(
-          stream: ClockController().clockState.stream$,
-          builder: (context, snapshot) {
-            final seconds = (snapshot.data?.seconds ?? 0) % 60;
-            final minutes = ((snapshot.data?.seconds ?? 0) ~/ 60) % 60;
-            final hours = (snapshot.data?.seconds ?? 0) ~/ 3600;
-            final double progressFraction =
-                ClockController().clockMode.current == ClockMode.done
-                    ? 1
-                    : (snapshot.data?.progressFraction ?? 0);
-            final phaseType = snapshot.data?.phase.type ?? ClockPhaseType.essay;
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                SizedBox(
-                  width: 300,
-                  height: 300,
-                  child: CircularProgressIndicator(
-                    value: progressFraction,
-                    backgroundColor:
-                        Theme.of(context).primaryColor.withOpacity(0.2),
-                    strokeWidth: 3,
-                  ),
-                ),
-                Column(
-                  children: [
-                    Text(
-                      phaseType == ClockPhaseType.essay
-                          ? 'Essay'
-                          : 'Chapter ${snapshot.data?.phase.counter}',
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                    Text(
-                      '${hours == 0 ? '' : '${hours.toString().padLeft(2, '0')} : '}${minutes.toString().padLeft(2, '0')} : ${seconds.toString().padLeft(2, '0')}',
-                      style: Theme.of(context).textTheme.headline1,
-                    ),
-                    const _ButtonsRow(),
-                  ],
-                )
-              ],
-            );
+        VisibilityDetector(
+          key: const Key('clock-widget'),
+          onVisibilityChanged: (info) {
+            if (info.visibleFraction != 0) {
+              ClockController().continueStreaming();
+            } else {
+              ClockController().pauseStreaming();
+            }
           },
+          child: StreamBuilder(
+            stream: ClockController().clockState.stream$,
+            builder: (context, snapshot) {
+              final seconds = (snapshot.data?.seconds ?? 0) % 60;
+              final minutes = ((snapshot.data?.seconds ?? 0) ~/ 60) % 60;
+              final hours = (snapshot.data?.seconds ?? 0) ~/ 3600;
+              final double progressFraction =
+                  ClockController().clockMode.current == ClockMode.done
+                      ? 1
+                      : (snapshot.data?.progressFraction ?? 0);
+              final phaseType =
+                  snapshot.data?.phase.type ?? ClockPhaseType.essay;
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: CircularProgressIndicator(
+                      value: progressFraction,
+                      backgroundColor:
+                          Theme.of(context).primaryColor.withOpacity(0.2),
+                      strokeWidth: 3,
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        phaseType == ClockPhaseType.essay
+                            ? 'Essay'
+                            : 'Chapter ${snapshot.data?.phase.counter}',
+                        style: Theme.of(context).textTheme.headline2,
+                      ),
+                      Text(
+                        '${hours == 0 ? '' : '${hours.toString().padLeft(2, '0')} : '}${minutes.toString().padLeft(2, '0')} : ${seconds.toString().padLeft(2, '0')}',
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                      const _ButtonsRow(),
+                    ],
+                  )
+                ],
+              );
+            },
+          ),
         ),
       ],
     );

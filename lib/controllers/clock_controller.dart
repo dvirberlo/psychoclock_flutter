@@ -82,6 +82,22 @@ class ClockController {
     Wakelock.enable();
   }
 
+  void pauseStreaming() {
+    _tickTimer?.cancel();
+    _tickTimer = null;
+  }
+
+  void continueStreaming() {
+    if (_tickTimer != null || clockMode.current != ClockMode.on) return;
+    _tick();
+    _tickTimer = Timer.periodic(
+      const Duration(milliseconds: clockIntervalMs),
+      (t) {
+        _tick();
+      },
+    );
+  }
+
   void _setupTimeouts() {
     final settings = SettingsController().generateSettings();
     int baseSeconds = -_secondsRan;
