@@ -1,3 +1,5 @@
+import '../models/settings.dart';
+
 enum ClockMode { off, on, paused, done }
 
 enum ClockPhaseType { essay, chapters }
@@ -9,6 +11,12 @@ class ClockPhase {
     required this.type,
     this.counter,
   });
+
+  int getSeconds(Settings settings) {
+    return type == ClockPhaseType.essay
+        ? settings.essaySeconds
+        : settings.chapterSeconds;
+  }
 }
 
 class ClockState {
