@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../app/views/about_view.dart';
+import '../app/views/home_view.dart';
+import '../app/views/settings_view.dart';
 import 'models/routing.dart';
-import 'views/about_view.dart';
-import 'views/home_view.dart';
-import 'views/settings_view.dart';
 
 final AppRouter router = AppRouter(routes: [
   AppRout(
