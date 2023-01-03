@@ -14,7 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PsychoClock',
-      theme: appDarkTheme,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system,
       initialRoute: '/',
       onGenerateRoute: (settings) {
         return AppPageRoute(

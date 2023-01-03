@@ -72,8 +72,10 @@ class HomeView extends StatelessWidget {
                       height: 300,
                       child: CircularProgressIndicator(
                         value: progressFraction,
-                        backgroundColor:
-                            Theme.of(context).primaryColor.withOpacity(0.2),
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.2),
                         strokeWidth: 3,
                       ),
                     ),
