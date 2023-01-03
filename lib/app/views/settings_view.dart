@@ -30,7 +30,7 @@ class SettingsView extends StatelessWidget {
                       const SizedBox(width: 10),
                       if (settings.withEssay)
                         _DoubleField(
-                          afterLabel: 'seconds long',
+                          afterLabel: 'minutes long',
                           initValue: settings.essaySeconds,
                           onChanged: (value) {
                             SettingsController().essaySeconds.set(value);
@@ -48,7 +48,7 @@ class SettingsView extends StatelessWidget {
                 if (settings.chaptersCount > 0)
                   _DoubleField(
                     label: 'Each chapter',
-                    afterLabel: 'seconds long',
+                    afterLabel: 'minutes long',
                     initValue: settings.chapterSeconds,
                     onChanged: (value) {
                       SettingsController().chapterSeconds.set(value);
@@ -245,7 +245,7 @@ class _DoubleField extends _Field {
   _DoubleField({
     super.key,
     super.label,
-    super.afterLabel = 'seconds',
+    super.afterLabel = 'minutes',
     required int initValue,
     required Function(int) onChanged,
     devideBy = 60,
