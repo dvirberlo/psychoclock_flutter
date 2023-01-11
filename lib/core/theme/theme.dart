@@ -73,6 +73,16 @@ class AppTheme {
     );
   }
 
+  static ThemeData withColorScheme(ColorScheme scheme) {
+    return _generateTheme(
+      ThemeData(
+        colorScheme: scheme,
+        fontFamily: 'Roboto',
+        useMaterial3: true,
+      ),
+    );
+  }
+
   static final dark = _generateTheme(_darkColors);
   static final light = _generateTheme(_lightColors);
 
